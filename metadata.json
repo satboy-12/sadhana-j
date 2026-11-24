@@ -1,0 +1,8 @@
+{
+  "name": "Remix Her Health Journey",
+  "description": "A women\u0027s health tracking platform focused on period tracking, PCOS symptoms, mood \u0026 wellness, nutrition, hydration, and personal health journaling, built as a frontend client for the Java Spring Boot REST API.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

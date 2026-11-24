@@ -1,0 +1,76 @@
+{
+  "version": 2,
+  "public": true,
+  "builds": [
+    {
+      "src": "website/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/health",
+      "dest": "/api/health.js"
+    },
+    {
+      "src": "/api/dashboard",
+      "dest": "/api/dashboard.js"
+    },
+    {
+      "src": "/api/auth/(.*)",
+      "dest": "/api/auth.js"
+    },
+    {
+      "src": "/",
+      "dest": "/website/index.html"
+    },
+    {
+      "src": "/login",
+      "dest": "/website/login.html"
+    },
+    {
+      "src": "/register",
+      "dest": "/website/register.html"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/website/dashboard.html"
+    },
+    {
+      "src": "/period-tracker",
+      "dest": "/website/period-tracker.html"
+    },
+    {
+      "src": "/pcos-symptoms",
+      "dest": "/website/pcos-symptoms.html"
+    },
+    {
+      "src": "/mood-wellness",
+      "dest": "/website/mood-wellness.html"
+    },
+    {
+      "src": "/nutrition",
+      "dest": "/website/nutrition.html"
+    },
+    {
+      "src": "/water-tracker",
+      "dest": "/website/water-tracker.html"
+    },
+    {
+      "src": "/health-journal",
+      "dest": "/website/health-journal.html"
+    },
+    {
+      "src": "/profile",
+      "dest": "/website/profile.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/website/$1"
+    }
+  ]
+}
