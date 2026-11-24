@@ -75,6 +75,10 @@ export function getFirebaseErrorMessage(codeOrMessage: string): string {
   if (codeOrMessage.includes('auth/popup-blocked')) {
     return 'Sign-in popup was blocked by the browser. Please allow popups for this site and try again.';
   }
+  if (codeOrMessage.includes('auth/unauthorized-domain')) {
+    const host = typeof window !== 'undefined' ? window.location.hostname : 'this domain';
+    return `This domain (${host}) is not authorized for Google Sign-In yet. Add "${host}" in Firebase Console → Authentication → Settings → Authorized domains.`;
+  }
   if (codeOrMessage.includes('auth/network-request-failed')) {
     return 'Network connection error. Please verify your internet connection.';
   }
