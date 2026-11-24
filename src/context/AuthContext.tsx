@@ -3,12 +3,10 @@ import {
   browserLocalPersistence,
   browserSessionPersistence,
   createUserWithEmailAndPassword,
-  GoogleAuthProvider,
   onAuthStateChanged,
   sendEmailVerification,
   setPersistence,
   signInWithEmailAndPassword,
-  signInWithPopup,
   signOut,
   updateProfile,
   type User as FirebaseUser,
@@ -23,7 +21,6 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   emailVerified: boolean;
   login: (payload: LoginPayload) => Promise<void>;
-  loginWithGoogle: () => Promise<void>;
   register: (payload: RegisterPayload) => Promise<void>;
   resendVerificationEmail: () => Promise<void>;
   refreshAuthUser: () => Promise<boolean>;
@@ -120,34 +117,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const loginWithGoogle = useCallback(async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: 'select_account' });
-      const cred = await signInWithPopup(auth, provider);
-      setUser(toAuthUser(cred.user));
-      setEmailVerified(cred.user.emailVerified);
-      if (cred.user.emailVerified) {
-        try {
-          const profile = await ensureUserAccountAndProfile(cred.user);
-          setUser({
-            id: cred.user.uid,
-            fullName: profile.fullName,
-            email: profile.email || cred.user.email || '',
-            memberSince: profile.memberSince,
-            accountTier: profile.accountTier || 'Firebase Cloud',
-          });
-        } catch (err) {
-          if (IS_DEV) {
-            console.error('[AuthContext] Google sign-in profile provisioning deferred:', err);
-          }
-        }
-      }
-    } catch (err) {
-      throw new Error(mapFirebaseAuthError(err, 'Unable to complete Google sign in.'));
-    }
-  }, []);
-
   const register = useCallback(async (payload: RegisterPayload) => {
     const cleanName = payload.fullName.trim();
     const cleanEmail = payload.email.trim();
@@ -238,7 +207,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isAuthenticated: Boolean(user),
       emailVerified,
       login,
-      loginWithGoogle,
       register,
       resendVerificationEmail,
       refreshAuthUser,
@@ -249,7 +217,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       authReady,
       emailVerified,
       login,
-      loginWithGoogle,
       register,
       resendVerificationEmail,
       refreshAuthUser,

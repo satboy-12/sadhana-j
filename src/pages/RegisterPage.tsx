@@ -20,7 +20,7 @@ import {
 } from '../utils/validation';
 
 export function RegisterPage() {
-  const { register, loginWithGoogle } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const [fullName, setFullName] = useState('');
@@ -38,21 +38,6 @@ export function RegisterPage() {
   const strength = useMemo(() => evaluatePasswordStrength(password), [password]);
   const passwordsMatch = confirmPassword.length > 0 && confirmPassword === password;
   const passwordsMismatch = confirmPassword.length > 0 && confirmPassword !== password;
-
-  const handleGoogleSignUp = async () => {
-    setAuthError(null);
-    setSubmitting(true);
-    try {
-      await loginWithGoogle();
-      navigate('/dashboard', { replace: true });
-    } catch (err) {
-      setAuthError(
-        err instanceof Error ? err.message : 'Unable to continue with Google.',
-      );
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -113,46 +98,13 @@ export function RegisterPage() {
                 Create your health account
               </h1>
               <p className="text-sm text-[var(--muted)] mt-1">
-                Continue with Google or register with email and password to sync your wellness records with Cloud Firestore.
+                Register with your email and password to sync your wellness records with Cloud Firestore.
               </p>
             </div>
 
             {authError && (
               <ErrorState error={authError} expectedEndpoint="Firebase Authentication" />
             )}
-
-            <button
-              type="button"
-              disabled={submitting}
-              onClick={() => void handleGoogleSignUp()}
-              className="w-full min-h-[44px] px-4 py-2.5 rounded-[12px] border border-[var(--border-strong)] bg-[var(--surface)] hover:bg-[var(--surface2)] text-sm font-semibold text-[var(--ink)] inline-flex items-center justify-center gap-2.5 transition-colors cursor-pointer disabled:opacity-60"
-            >
-              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  fill="#4285F4"
-                  d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24Z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14Z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96Z"
-                />
-              </svg>
-              <span>Continue with Google</span>
-            </button>
-
-            <div className="relative flex items-center gap-3 text-xs text-[var(--muted)]">
-              <span className="h-px flex-1 bg-[var(--line)]" />
-              <span>or create with email</span>
-              <span className="h-px flex-1 bg-[var(--line)]" />
-            </div>
 
             <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
               <FormInput

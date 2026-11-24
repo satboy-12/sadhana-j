@@ -247,7 +247,7 @@ export function HomePage({ introVisible = false, onReplayIntro }: HomePageProps)
                 Your health records belong strictly to you
               </h2>
               <p className="text-[var(--muted)] mt-3 leading-relaxed">
-                Health logs are deeply personal. Sign in with Google or your email and password for strict per-user Firebase Authentication and Cloud Firestore isolation across both web and Android.
+                Health logs are deeply personal. Sign in with your email and password for strict per-user Firebase Authentication and Cloud Firestore isolation across both web and Android.
               </p>
               <div className="mt-5">
                 <Link
@@ -321,7 +321,7 @@ export function HomePage({ introVisible = false, onReplayIntro }: HomePageProps)
               Ready when you are
             </h2>
             <p className="max-w-[48ch] text-[#B9D2C5] leading-relaxed">
-              Create an account or sign in with Google or email and password to sync your six wellness tracking modules with Cloud Firestore.
+              Create an account or sign in with your email and password to sync your six wellness tracking modules with Cloud Firestore.
             </p>
             <div className="flex flex-wrap gap-3 pt-1">
               <SecondaryButton

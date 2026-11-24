@@ -1,10 +1,8 @@
 import {
   createUserWithEmailAndPassword,
-  GoogleAuthProvider,
   onAuthStateChanged,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
-  signInWithPopup,
   signOut,
   updateProfile,
   type User as FirebaseUser,
@@ -67,17 +65,11 @@ export function getFirebaseErrorMessage(codeOrMessage: string): string {
     return 'Too many unsuccessful attempts. Access temporarily blocked for security. Please try again later or reset password.';
   }
   if (codeOrMessage.includes('auth/operation-not-allowed')) {
-    return 'Email/Password sign-in is not enabled for this Firebase project. Use Continue with Google below, or enable Email/Password in Firebase Console → Authentication → Sign-in method.';
-  }
-  if (codeOrMessage.includes('auth/popup-closed-by-user')) {
-    return 'Google sign-in popup was closed before completing authentication.';
-  }
-  if (codeOrMessage.includes('auth/popup-blocked')) {
-    return 'Sign-in popup was blocked by the browser. Please allow popups for this site and try again.';
+    return 'Email/Password sign-in is not enabled for this Firebase project. Enable Email/Password in Firebase Console → Authentication → Sign-in method.';
   }
   if (codeOrMessage.includes('auth/unauthorized-domain')) {
     const host = typeof window !== 'undefined' ? window.location.hostname : 'this domain';
-    return `This domain (${host}) is not authorized for Google Sign-In yet. Add "${host}" in Firebase Console → Authentication → Settings → Authorized domains.`;
+    return `This domain (${host}) is not authorized in Firebase Console → Authentication → Settings → Authorized domains.`;
   }
   if (codeOrMessage.includes('auth/network-request-failed')) {
     return 'Network connection error. Please verify your internet connection.';
@@ -345,19 +337,6 @@ export const authService = {
     const user = cred.user;
 
     const profile = user.emailVerified ? await ensureUserAccountAndProfile(user) : undefined;
-    const token = await user.getIdToken();
-    const authUser = mapFirebaseUserToAuthUser(user, profile);
-
-    return { token, tokenType: 'Bearer', user: authUser };
-  },
-
-  async loginWithGoogle(): Promise<AuthResponse> {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
-    const cred = await signInWithPopup(auth, provider);
-    const user = cred.user;
-
-    const profile = await ensureUserAccountAndProfile(user);
     const token = await user.getIdToken();
     const authUser = mapFirebaseUserToAuthUser(user, profile);
 
